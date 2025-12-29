@@ -1,26 +1,28 @@
-@import "tailwindcss";
+/* src/app/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  body {
+    @apply antialiased;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .btn-primary {
+    @apply bg-electric hover:bg-electric-dark text-dark font-semibold px-6 py-3 rounded-lg transition-all duration-300 hover:scale-105 active:scale-95;
+  }
+  
+  .btn-secondary {
+    @apply bg-dark-light hover:bg-dark-lighter text-white font-semibold px-6 py-3 rounded-lg border border-electric/30 transition-all duration-300 hover:border-electric;
+  }
+  
+  .card {
+    @apply bg-dark-lighter rounded-xl border border-dark-light hover:border-electric/50 transition-all duration-300;
+  }
+  
+  .input {
+    @apply bg-dark-light border border-dark-light rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-electric focus:outline-none transition-colors;
+  }
 }
