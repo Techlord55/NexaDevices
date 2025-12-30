@@ -2,13 +2,16 @@
 'use client'
 
 import { X, Plus, Minus, Trash2, ShoppingBag } from 'lucide-react'
-import { useCartStore } from '@/store/cartStore'
+import { useCartStore, useCartTotal } from '@/store/cartStore'
+import { SignInButton, useUser } from '@clerk/nextjs'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect } from 'react'
 
 export default function CartDrawer() {
-  const { items, isOpen, toggleCart, updateQuantity, removeItem, total } = useCartStore()
+  const { items, isOpen, toggleCart, updateQuantity, removeItem } = useCartStore()
+  const total = useCartTotal()
+  const { isSignedIn } = useUser()
 
   useEffect(() => {
     if (isOpen) {
@@ -132,14 +135,22 @@ export default function CartDrawer() {
                 Shipping and taxes calculated at checkout
               </p>
 
-              {/* Checkout Button */}
-              <Link
-                href="/checkout"
-                onClick={toggleCart}
-                className="block w-full btn-primary text-center"
-              >
-                Proceed to Checkout
-              </Link>
+              {/* Checkout Button - Conditional based on auth */}
+              {isSignedIn ? (
+                <Link
+                  href="/checkout"
+                  onClick={toggleCart}
+                  className="block w-full btn-primary text-center"
+                >
+                  Proceed to Checkout
+                </Link>
+              ) : (
+                <SignInButton mode="modal">
+                  <button className="w-full btn-primary">
+                    Sign In to Checkout
+                  </button>
+                </SignInButton>
+              )}
 
               {/* Continue Shopping */}
               <button

@@ -162,18 +162,56 @@ export default function ProductDetail({ product }) {
 
           {/* Action Buttons */}
           <div className="flex gap-4 mb-8">
+            {/* Add to Cart Button */}
             <button
               onClick={handleAddToCart}
               disabled={!product.in_stock}
-              className="flex-1 btn-primary flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 btn-primary flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed min-h-[48px]"
             >
               <ShoppingCart size={20} className="mr-2" />
               Add to Cart
             </button>
-            <button className="w-12 h-12 btn-secondary flex items-center justify-center">
+            
+          
+            
+         {/* Favorite Button */}
+            <button 
+              onClick={() => toast.success('Added to wishlist!')}
+              className="w-12 h-12 bg-dark-lighter hover:bg-dark-light rounded-lg flex items-center justify-center text-white hover:text-electric transition-colors"
+              aria-label="Add to wishlist"
+            >
               <Heart size={20} />
             </button>
-            <button className="w-12 h-12 btn-secondary flex items-center justify-center">
+            
+            {/* Share Button */}
+            <button 
+              onClick={async () => {
+                try {
+                  if (navigator.share) {
+                    await navigator.share({
+                      title: product.name,
+                      text: product.description,
+                      url: window.location.href,
+                    })
+                  } else {
+                    await navigator.clipboard.writeText(window.location.href)
+                    toast.success('Link copied to clipboard!')
+                  }
+                } catch (error) {
+                  // If share/clipboard fails, try fallback
+                  if (error.name !== 'AbortError') {
+                    try {
+                      await navigator.clipboard.writeText(window.location.href)
+                      toast.success('Link copied to clipboard!')
+                    } catch (clipboardError) {
+                      toast.error('Unable to copy link. Please copy manually.')
+                    }
+                  }
+                }
+              }}
+              className="w-12 h-12 bg-dark-lighter hover:bg-dark-light rounded-lg flex items-center justify-center text-white hover:text-electric transition-colors"
+              aria-label="Share product"
+            >
               <Share2 size={20} />
             </button>
           </div>

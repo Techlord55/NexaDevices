@@ -6,6 +6,7 @@ import './globals.css'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import CartDrawer from '@/components/cart/CartDrawer'
+import ChatWidget from '@/components/common/ChatWidget'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -27,6 +28,9 @@ export default function RootLayout({ children }) {
             </main>
             <Footer />
             <CartDrawer />
+            
+            {/* Global Chat Widget - Shows on all pages */}
+            <ChatWidget />
           </Providers>
         </body>
       </html>

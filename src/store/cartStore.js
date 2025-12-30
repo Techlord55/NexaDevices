@@ -44,17 +44,24 @@ export const useCartStore = create(
       clearCart: () => set({ items: [] }),
       
       toggleCart: () => set({ isOpen: !get().isOpen }),
-      
-      get total() {
-        return get().items.reduce((sum, item) => sum + item.product.price * item.quantity, 0)
-      },
-      
-      get itemCount() {
-        return get().items.reduce((sum, item) => sum + item.quantity, 0)
-      },
     }),
     {
       name: 'cart-storage',
     }
   )
 )
+
+// Selector hooks for computed values
+export const useCartTotal = () => 
+  useCartStore((state) => 
+    state.items.reduce((sum, item) => {
+      const price = parseFloat(item.product.price) || 0
+      const quantity = parseInt(item.quantity) || 0
+      return sum + (price * quantity)
+    }, 0)
+  )
+
+export const useCartItemCount = () => 
+  useCartStore((state) => 
+    state.items.reduce((sum, item) => sum + item.quantity, 0)
+  )
